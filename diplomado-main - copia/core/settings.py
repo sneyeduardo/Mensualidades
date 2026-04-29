@@ -63,26 +63,23 @@ TEMPLATES = [
 WSGI_APPLICATION = 'core.wsgi.application'
 
 
-# Detectar si la app se está ejecutando en Render
-IS_RENDER = 'RENDER' in os.environ
-
 # Base de datos conectada a Aiven
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'defaultdb', 
         'USER': 'avnadmin',
-        'PASSWORD': 'AVNS_vIkgPXLcFad6n65he4x', # Mantenlo igual que el tuyo
+        'PASSWORD': 'AVNS_vIkgPXLcFad6n65he4x', # <- RECUERDA PONER LA CONTRASEÑA REAL AQUÍ
         'HOST': 'mysql-26b5007e-josemanuelyanes61-b904.g.aivencloud.com',
         'PORT': '17223',
         'OPTIONS': {
             'ssl': {
-                # Si estamos en Render, usa la ruta de Linux. Si estamos local, usa ca.pem
-                'ca': '/etc/ssl/certs/ca-certificates.crt' if IS_RENDER else os.path.join(BASE_DIR, 'ca.pem'),
+                'ca': os.path.join(BASE_DIR, 'ca.pem'),
             },
         },
     }
 }
+
 
 # Password validation
 AUTH_PASSWORD_VALIDATORS = [
