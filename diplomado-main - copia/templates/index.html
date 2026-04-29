@@ -1,0 +1,111 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portal de Pagos - Diplomado IA Generativa</title>
+    <link rel="stylesheet" href="{% static 'css/styles1.css' %}">
+    <style>
+        /* Estilo temporal para ocultar el contenido hasta que cargue la imagen */
+        .welcome-overlay { opacity: 0; transition: opacity 0.5s ease; }
+        .loaded .welcome-overlay { opacity: 1; }
+
+        /* NUEVOS ESTILOS: Para el formulario de login */
+        .login-form {
+            margin-top: 25px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            align-items: center;
+        }
+        
+        .login-input {
+            width: 85%; /* Ajustado para que encaje bien en la tarjeta */
+            padding: 12px 15px;
+            border: 1px solid rgba(0, 0, 0, 0.2);
+            border-radius: 8px;
+            font-size: 16px;
+            background-color: rgba(255, 255, 255, 0.95);
+            color: #333;
+            transition: all 0.3s ease;
+        }
+        
+        /* Efecto cuando el usuario hace clic en el input (Borde naranja) */
+        .login-input:focus {
+            outline: none;
+            border-color: #f37021; 
+            box-shadow: 0 0 8px rgba(243, 112, 33, 0.4);
+            background-color: #ffffff;
+        }
+        
+        /* Estilo para los mensajes de error de contraseña */
+        .alert-error {
+            color: #d9534f;
+            background-color: rgba(217, 83, 79, 0.1);
+            border: 1px solid rgba(217, 83, 79, 0.3);
+            padding: 10px;
+            border-radius: 6px;
+            margin-top: 15px;
+            font-weight: 600;
+            font-size: 14px;
+            text-align: center;
+            width: 85%;
+            margin-left: auto;
+            margin-right: auto;
+        }
+    </style>
+</head>
+<body class="bg-tech">
+    <div class="welcome-overlay">
+        <div class="welcome-card">
+            <div class="logos-welcome">
+                <img src="{% static 'img/universidad-de-carabobo-logo-png_seeklogo-535325.png' %}" alt="UC Logo">
+                <img src="{% static 'img/Zynaoxe.png' %}" alt="Zynapxe Logo">
+                <img src="{% static 'img/cenforpro.png' %}" alt="Cenforpro Logo">
+            </div>
+            <h1>Portal de Mensualidades</h1>
+            <h2>Diplomado en IA Generativa</h2>
+
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="alert-error">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+
+            <form action="{% url 'login_pagos' %}" method="POST" class="login-form">
+                {% csrf_token %}
+                
+                <input type="text" name="cedula" class="login-input" placeholder="Cédula de Identidad" required autocomplete="off">
+                
+                <input type="password" name="contrasena" class="login-input" placeholder="Contraseña" required>
+                
+                <button type="submit" class="btn-enter" style="width: 85%; border: none; cursor: pointer; margin-top: 10px;">
+                    Ingresar
+                </button>
+            </form>
+            
+        </div>
+    </div>
+    
+    <script>
+        // Tu script intacto para precargar la imagen
+        window.addEventListener('load', function() {
+            const bgImageUrl = '{% static "img/fondo_ia.jpeg" %}'; 
+            const img = new Image();
+            img.src = bgImageUrl;
+            
+            img.onload = function() {
+                document.body.classList.add('loaded');
+            };
+
+            img.onerror = function() {
+                console.warn("La imagen de fondo falló, pero cargando el sistema...");
+                document.body.classList.add('loaded');
+            };
+        });
+    </script>
+</body>
+</html>

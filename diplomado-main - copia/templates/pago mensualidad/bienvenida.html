@@ -1,0 +1,283 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inscripción - Diplomado en IA Generativa</title>
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="logos">
+                <img src="{% static 'img/universidad-de-carabobo-logo-png_seeklogo-535325.png' %}" alt="UC Logo" class="logo-uc">
+                <img src="{% static 'img/Zynaoxe.png' %}" alt="Zynapxe Logo" class="logo-zyna">
+                <img src="{% static 'img/cenforpro.png' %}" alt="Cenforpro Logo" class="logo-cen">
+            </div>
+            <h1>Inscripción Diplomado IA Generativa</h1>
+            <h2>Universidad de Carabobo - Cenforpro - Zynapxe AI Engineer</h2><br>  
+            <h3>Estrategias, Implementación y Marco Legal</h3>
+        </header>
+
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags }}" style="padding: 10px; margin-bottom: 15px; border-radius: 5px; background-color: #d4edda; color: #155724; border: 1px solid #c3e6cb;">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endif %}
+
+        <form id="registrationForm" action="" method="POST" enctype="multipart/form-data">
+            {% csrf_token %} 
+            
+            <div class="form-group">
+                <label for="foto">Foto del Alumno <span style="color: red;">*</span></label>
+                <input type="file" id="foto" name="foto" accept="image/png, image/jpeg" required>
+                <div id="previewContainer" class="hidden contenedor-preview">
+                    <img id="fotoPreview" src="" alt="Vista previa" class="img-preview">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="cedula_documento">Foto de Cédula de Identidad <span style="color: red;">*</span></label>
+                <input type="file" id="cedula_documento" name="cedula_documento" accept="image/png, image/jpeg" required>
+                <div id="previewCedulaContainer" class="hidden contenedor-preview">
+                    <img id="cedulaPreview" src="" alt="Vista previa cédula" class="img-preview">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Cédula de Identidad (PK)</label>
+                <div class="input-group">
+                    <select id="ci_prefix" name="ci_prefix" required>
+                        <option value="V-">V-</option>
+                        <option value="E-">E-</option>
+                    </select>
+                    <input type="number" id="cedula" name="cedula" placeholder="12345678" required>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="form-group">
+                    <label for="nombres">Nombres</label>
+                    <input type="text" id="nombres" name="nombres" maxlength="30" required>
+                </div>
+                <div class="form-group">
+                    <label for="apellidos">Apellidos</label>
+                    <input type="text" id="apellidos" name="apellidos" maxlength="30" required>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="form-group">
+                    <label for="fecha_nacimiento">Fecha de Nacimiento</label>
+                    <input type="date" id="fecha_nacimiento" name="fecha_nacimiento" required>
+                </div>
+                <div class="form-group">
+                    <label for="edad">Edad</label>
+                    <input type="number" id="edad" name="edad" readonly placeholder="Auto-calculada">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="profesion">Profesión u Oficio</label>
+                <input type="text" id="profesion" name="profesion" maxlength="25" required>
+            </div>
+
+            <div class="form-group">
+                <label for="direccion">Dirección de Habitación</label>
+                <input type="text" id="direccion" name="direccion" maxlength="100" required>
+            </div>
+
+            <div class="row">
+                <div class="form-group">
+                    <label for="correo">Correo Electrónico</label>
+                    <input type="email" id="correo" name="correo" placeholder="ejemplo@gmail.com" pattern="^.+@gmail\.com$" title="Solo cuentas @gmail.com" required>
+                </div>
+                <div class="form-group">
+                    <label for="telefono">Teléfono</label>
+                    <input type="tel" id="telefono" name="telefono" maxlength="11" minlength="11" pattern="[0-9]{11}" title="Ejemplo: 04141234567" placeholder="04141234567" required>
+                </div>
+            </div><br>
+
+            <hr>
+            <h3 style="color: #0056b3; margin-bottom: 20px;">Detalles del Pago</h3>
+
+            <div class="row">
+                <div class="form-group">
+                    <label for="monto">Monto de Pago ($) <span style="color: red;">*</span></label>
+                    <input type="number" id="monto" name="monto" step="0.01" min="0.01" required>
+                </div>
+                <div class="form-group">
+                    <label for="metodo_pago">Método de Pago <span style="color: red;">*</span></label>
+                    <select name="metodo_pago" id="metodo_pago" required onchange="alternarPago()">
+                        <option value="pago_movil" selected>Pago Móvil</option>
+                        <option value="zelle">Zelle</option>
+                        <option value="transferencia">Transferencia Bancaria</option>
+                    </select>
+                </div>
+            </div>
+            <div id="caja_transferencia" style="display: none; background-color: #fff9ed; padding: 15px 20px; border-radius: 8px; margin-bottom: 20px; border: 1px solid #ffeeba; border-left: 5px solid #ffc107; box-shadow: 0 2px 5px rgba(0,0,0,0.05);">
+                <h4 style="margin-top: 0; color: #856404; font-size: 16px; margin-bottom: 12px;"> Datos para Transferencia:</h4>
+                <ul style="margin-bottom: 0; color: #444; list-style-type: none; padding-left: 0; font-size: 15px; line-height: 1.8;">
+                    <li><strong>Banco:</strong> Banco de Venezuela (0102)</li>
+                    <li><strong>Número de Cuenta:</strong> 01020441110000640211</li>
+                    <li><strong>RIF:</strong> J-500034792</li>
+                    <li><strong>Titular:</strong> Cenforpro, C.A.</li>
+                </ul>
+            </div>
+
+            <div id="caja_pago_movil" style="display: block; background-color: #f8fbff; padding: 15px 20px; border-radius: 8px; margin-bottom: 20px; border: 1px solid #cce5ff; border-left: 5px solid #0056b3; box-shadow: 0 2px 5px rgba(0,0,0,0.05);">
+                <h4 style="margin-top: 0; color: #0056b3; font-size: 16px; margin-bottom: 12px;"> Datos para Pago Móvil:</h4>
+                <ul style="margin-bottom: 0; color: #444; list-style-type: none; padding-left: 0; font-size: 15px; line-height: 1.8;">
+                    <li><strong>Banco:</strong> Banco de Venezuela (0102)</li>
+                    <li><strong>Teléfono:</strong> 0424-7556327</li>
+                    <li><strong>RIF:</strong> J-500034792</li>
+                    <li><strong>Titular:</strong> Cenforpro, C.A.</li>
+                </ul>
+            </div>
+
+            <div id="caja_zelle" style="display: none; background-color: #f3fcf5; padding: 15px 20px; border-radius: 8px; margin-bottom: 20px; border: 1px solid #d4edda; border-left: 5px solid #28a745; box-shadow: 0 2px 5px rgba(0,0,0,0.05);">
+                <h4 style="margin-top: 0; color: #155724; font-size: 16px; margin-bottom: 8px;"> Datos para Zelle:</h4>
+                <p style="margin-bottom: 5px; color: #444; font-size: 15px;">Realice su transferencia al siguiente correo electrónico:</p>
+                <p style="margin-top: 0; margin-bottom: 0; font-weight: bold; font-size: 18px; color: #28a745; letter-spacing: 0.5px;">leonejurado74@gmail.com</p>
+            </div>
+
+            <div class="form-group" id="contenedor_banco" style="display: block;">
+                <label for="banco">Banco Emisor <span style="color: red;">*</span></label>
+                <select id="banco" name="banco" required>
+                    <option value="Banco de Venezuela">Banco de Venezuela</option>
+                    <option value="Banco del Tesoro">Banco del Tesoro</option>
+                    <option value="Banco Agrícola de Venezuela">Banco Agrícola de Venezuela</option>
+                    <option value="Banco de la Fuerza Armada Nacional Bolivariana (BANFANB)">BANFANB</option>
+                    <option value="Banco Bicentenario del Pueblo">Banco Bicentenario del Pueblo</option>
+                    <option value="100% Banco">100% Banco</option>
+                    <option value="Bancamiga">Bancamiga</option>
+                    <option value="Bancaribe">Bancaribe</option>
+                    <option value="Banco Activo">Banco Activo</option>
+                    <option value="Banco Caroní">Banco Caroní</option>
+                    <option value="Banco Exterior">Banco Exterior</option>
+                    <option value="Banco Mercantil">Banco Mercantil</option>
+                    <option value="Banco Nacional de Crédito (BNC)">Banco Nacional de Crédito (BNC)</option>
+                    <option value="Banco Plaza">Banco Plaza</option>
+                    <option value="Banco Sofitasa">Banco Sofitasa</option>
+                    <option value="Banco Venezolano de Crédito">Banco Venezolano de Crédito</option>
+                    <option value="Banplus">Banplus</option>
+                    <option value="Banesco">Banesco</option>
+                    <option value="BBVA Provincial">BBVA Provincial</option>
+                    <option value="DELSUR Banco Universal">DELSUR Banco Universal</option>
+                    <option value="Mi Banco">Mi Banco</option>
+                    <option value="Bangente">Bangente</option>
+                    <option value="Bancrecer">Bancrecer</option>
+                </select>
+            </div>
+            
+            <div class="row">
+                <div class="form-group">
+                    <label for="referencia">Número de Referencia <span style="color: red;">*</span></label>
+                    <input type="text" id="referencia" name="referencia" maxlength="50" required placeholder="Ej: 123456789">
+                </div>
+
+                <div class="form-group">
+                    <label for="fecha_pago">Fecha del Depósito <span style="color: red;">*</span></label>
+                    <input type="date" id="fecha_pago" name="fecha_pago" required>
+                </div>
+            </div> <div class="form-group">
+                <label for="comprobante_pago">Capture del Pago (Comprobante) <span style="color: red;">*</span></label>
+                <input type="file" id="comprobante_pago" name="comprobante_pago" accept="image/png, image/jpeg" required>
+                <div id="previewPagoContainer" class="hidden contenedor-preview">
+                    <img id="pagoPreview" src="" alt="Vista previa pago" class="img-preview">
+                </div>
+            </div>
+
+            <button type="submit" id="btnSubmit" style="margin-top: 20px;">Registrar Inscripción</button>
+        </form>
+
+        <div class="admin-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+    <h3>Alumnos Inscritos</h3>
+    <div style="display: flex; gap: 10px;">
+        <button id="downloadCsv" style="background-color: #28a745; color: white; padding: 8px 70px; border: none; border-radius: 5px; cursor: pointer; font-weight: bold;">
+            Exportar a Excel
+        </button>
+        <a href="{% url 'inicio' %}" style="background-color: #dc3545; color: white; padding: 8px 15px; text-decoration: none; border-radius: 100px; font-weight: bold; display: inline-block;">
+            Salir
+        </a>
+    </div>
+</div>
+
+            <div class="table-container" style="overflow-x: auto;">
+                <table id="recordsTable" style="width: 100%; border-collapse: collapse; text-align: left;">
+                   <thead style="background-color: #f2f2f2;">
+    <tr>
+        <th style="padding: 10px; border: 1px solid #ddd;">Foto Perfil</th>
+        <th style="padding: 10px; border: 1px solid #ddd;">Foto Cédula</th>
+        <th style="padding: 10px; border: 1px solid #ddd;">Comprobante</th>
+        <th style="padding: 10px; border: 1px solid #ddd;">Fecha Pago</th>
+        <th style="padding: 10px; border: 1px solid #ddd;">Cédula</th>
+        <th style="padding: 10px; border: 1px solid #ddd;">Nombre Completo</th>
+        <th style="padding: 10px; border: 1px solid #ddd;">Correo</th>
+        <th style="padding: 10px; border: 1px solid #ddd;">Referencia</th>
+    </tr>
+</thead>  
+<tbody>
+    {% for alumno in lista_alumnos %}
+    <tr>
+        <td style="padding: 10px; border: 1px solid #ddd; text-align: center;">
+            {% if alumno.foto %}
+                <img src="{{ alumno.foto }}" alt="Perfil" width="50" height="50" style="border-radius: 50%; object-fit: cover;">
+            {% else %}
+                N/A
+            {% endif %}
+        </td>
+        
+        <td style="padding: 10px; border: 1px solid #ddd; text-align: center;">
+            {% if alumno.cedula_documento %}
+                <a href="{{ alumno.cedula_documento }}" target="_blank">
+                    <img src="{{ alumno.cedula_documento }}" alt="Cédula" width="50" height="50" style="object-fit: cover; border-radius: 5px; border: 1px solid #ccc;">
+                </a>
+            {% else %}
+                N/A
+            {% endif %}
+        </td>
+        
+        <td style="padding: 10px; border: 1px solid #ddd; text-align: center;">
+            {% if alumno.comprobante_pago %}
+                <a href="{{ alumno.comprobante_pago }}" target="_blank">
+                    <img src="{{ alumno.comprobante_pago }}" alt="Pago" width="50" height="50" style="object-fit: cover; border-radius: 5px; border: 1px solid #ccc;">
+                </a>
+            {% else %}
+                N/A
+            {% endif %}
+        </td>
+        
+        <td style="padding: 10px; border: 1px solid #ddd; text-align: center;">
+            {% if alumno.fecha_pago %}
+                {{ alumno.fecha_pago|date:"d/m/Y" }}
+            {% else %}
+                <span style="color: #999;">N/A</span>
+            {% endif %}
+        </td>
+        
+        <td style="padding: 10px; border: 1px solid #ddd;">{{ alumno.tipo_documento }}-{{ alumno.cedula }}</td>
+        
+        <td style="padding: 10px; border: 1px solid #ddd;">{{ alumno.nombres }} {{ alumno.apellidos }}</td>
+        
+        <td style="padding: 10px; border: 1px solid #ddd;">{{ alumno.correo }}</td>
+        
+        <td style="padding: 10px; border: 1px solid #ddd;">{{ alumno.referencia }}</td>
+    </tr>
+    
+    {% empty %}
+    <tr>
+        <td colspan="8" style="padding: 20px; text-align: center; border: 1px solid #ddd;">No hay alumnos registrados aún.</td>
+    </tr>
+    {% endfor %}
+</tbody>
+                </table>
+            </div>
+        </section>
+    </div>
+    <script src="{% static 'js/script.js' %}"></script>
+</body>
+</html>

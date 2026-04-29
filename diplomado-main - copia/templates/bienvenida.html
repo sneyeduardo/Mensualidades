@@ -1,0 +1,153 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pago de Mensualidad - Diplomado en IA Generativa</title>
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="logos">
+                <img src="{% static 'img/universidad-de-carabobo-logo-png_seeklogo-535325.png' %}" alt="UC Logo" class="logo-uc">
+                <img src="{% static 'img/Zynaoxe.png' %}" alt="Zynapxe Logo" class="logo-zyna">
+                <img src="{% static 'img/cenforpro.png' %}" alt="Cenforpro Logo" class="logo-cen">
+            </div>
+            <h1>Registro de Mensualidad</h1>
+            <h2>Diplomado IA Generativa</h2><br>  
+            <h3>Estrategias, Implementación y Marco Legal</h3>
+        </header>
+
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags }}" style="padding: 10px; margin-bottom: 15px; border-radius: 5px; background-color: #d4edda; color: #155724; border: 1px solid #c3e6cb;">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endif %}
+
+        <form id="pagoMensualidadForm" action="" method="POST" enctype="multipart/form-data">
+            {% csrf_token %} 
+            
+            <div class="form-group">
+                <label>Estudiante</label>
+                <input type="text" value="Cédula: {{ request.session.estudiante_id }}" readonly style="background-color: #e9ecef; cursor: not-allowed; color: #495057; border: 1px solid #ccc;">
+            </div>
+
+            <div class="form-group">
+                <label for="mes_pagado">¿Qué mensualidad estás reportando? <span style="color: red;">*</span></label>
+                <select id="mes_pagado" name="mes_pagado" required style="width: 100%; padding: 10px; border-radius: 5px; border: 1px solid #ccc; font-size: 16px;">
+                    <option value="" disabled selected>Selecciona el mes...</option>
+                    <option value="1">Mensualidad 1</option>
+                    <option value="2">Mensualidad 2</option>
+                    <option value="3">Mensualidad 3</option>
+                </select>
+            </div>
+
+            <hr style="margin: 25px 0;">
+            <h3 style="color: #0056b3; margin-bottom: 20px;">Detalles del Pago</h3>
+
+            <div class="row">
+                <div class="form-group">
+                    <label for="monto">Monto de Pago ($) <span style="color: red;">*</span></label>
+                    <input type="number" id="monto" name="monto" step="0.01" min="0.01" required>
+                </div>
+                <div class="form-group">
+                    <label for="metodo_pago">Método de Pago <span style="color: red;">*</span></label>
+                    <select name="metodo_pago" id="metodo_pago" required onchange="alternarPago()">
+                        <option value="pago_movil" selected>Pago Móvil</option>
+                        <option value="zelle">Zelle</option>
+                        <option value="transferencia">Transferencia Bancaria</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div id="caja_transferencia" style="display: none; background-color: #fff9ed; padding: 15px 20px; border-radius: 8px; margin-bottom: 20px; border: 1px solid #ffeeba; border-left: 5px solid #ffc107; box-shadow: 0 2px 5px rgba(0,0,0,0.05);">
+                <h4 style="margin-top: 0; color: #856404; font-size: 16px; margin-bottom: 12px;"> Datos para Transferencia:</h4>
+                <ul style="margin-bottom: 0; color: #444; list-style-type: none; padding-left: 0; font-size: 15px; line-height: 1.8;">
+                    <li><strong>Banco:</strong> Banco de Venezuela (0102)</li>
+                    <li><strong>Número de Cuenta:</strong> 01020441110000640211</li>
+                    <li><strong>RIF:</strong> J-500034792</li>
+                    <li><strong>Titular:</strong> Cenforpro, C.A.</li>
+                </ul>
+            </div>
+
+            <div id="caja_pago_movil" style="display: block; background-color: #f8fbff; padding: 15px 20px; border-radius: 8px; margin-bottom: 20px; border: 1px solid #cce5ff; border-left: 5px solid #0056b3; box-shadow: 0 2px 5px rgba(0,0,0,0.05);">
+                <h4 style="margin-top: 0; color: #0056b3; font-size: 16px; margin-bottom: 12px;"> Datos para Pago Móvil:</h4>
+                <ul style="margin-bottom: 0; color: #444; list-style-type: none; padding-left: 0; font-size: 15px; line-height: 1.8;">
+                    <li><strong>Banco:</strong> Banco de Venezuela (0102)</li>
+                    <li><strong>Teléfono:</strong> 0424-7556327</li>
+                    <li><strong>RIF:</strong> J-500034792</li>
+                    <li><strong>Titular:</strong> Cenforpro, C.A.</li>
+                </ul>
+            </div>
+
+            <div id="caja_zelle" style="display: none; background-color: #f3fcf5; padding: 15px 20px; border-radius: 8px; margin-bottom: 20px; border: 1px solid #d4edda; border-left: 5px solid #28a745; box-shadow: 0 2px 5px rgba(0,0,0,0.05);">
+                <h4 style="margin-top: 0; color: #155724; font-size: 16px; margin-bottom: 8px;"> Datos para Zelle:</h4>
+                <p style="margin-bottom: 5px; color: #444; font-size: 15px;">Realice su transferencia al siguiente correo electrónico:</p>
+                <p style="margin-top: 0; margin-bottom: 0; font-weight: bold; font-size: 18px; color: #28a745; letter-spacing: 0.5px;">leonejurado74@gmail.com</p>
+            </div>
+
+            <div class="form-group" id="contenedor_banco" style="display: block;">
+                <label for="banco">Banco Emisor <span style="color: red;">*</span></label>
+                <select id="banco" name="banco" required>
+                    <option value="Banco de Venezuela">Banco de Venezuela</option>
+                    <option value="Banco del Tesoro">Banco del Tesoro</option>
+                    <option value="Banco Agrícola de Venezuela">Banco Agrícola de Venezuela</option>
+                    <option value="Banco de la Fuerza Armada Nacional Bolivariana (BANFANB)">BANFANB</option>
+                    <option value="Banco Bicentenario del Pueblo">Banco Bicentenario del Pueblo</option>
+                    <option value="100% Banco">100% Banco</option>
+                    <option value="Bancamiga">Bancamiga</option>
+                    <option value="Bancaribe">Bancaribe</option>
+                    <option value="Banco Activo">Banco Activo</option>
+                    <option value="Banco Caroní">Banco Caroní</option>
+                    <option value="Banco Exterior">Banco Exterior</option>
+                    <option value="Banco Mercantil">Banco Mercantil</option>
+                    <option value="Banco Nacional de Crédito (BNC)">Banco Nacional de Crédito (BNC)</option>
+                    <option value="Banco Plaza">Banco Plaza</option>
+                    <option value="Banco Sofitasa">Banco Sofitasa</option>
+                    <option value="Banco Venezolano de Crédito">Banco Venezolano de Crédito</option>
+                    <option value="Banplus">Banplus</option>
+                    <option value="Banesco">Banesco</option>
+                    <option value="BBVA Provincial">BBVA Provincial</option>
+                    <option value="DELSUR Banco Universal">DELSUR Banco Universal</option>
+                    <option value="Mi Banco">Mi Banco</option>
+                    <option value="Bangente">Bangente</option>
+                    <option value="Bancrecer">Bancrecer</option>
+                </select>
+            </div>
+            
+            <div class="row">
+                <div class="form-group">
+                    <label for="referencia">Número de Referencia <span style="color: red;">*</span></label>
+                    <input type="text" id="referencia" name="referencia" maxlength="50" required placeholder="Ej: 123456789">
+                </div>
+
+                <div class="form-group">
+                    <label for="fecha_pago">Fecha del Depósito <span style="color: red;">*</span></label>
+                    <input type="date" id="fecha_pago" name="fecha_pago" required>
+                </div>
+            </div> 
+            
+            <div class="form-group">
+                <label for="comprobante_pago">Capture del Pago (Comprobante) <span style="color: red;">*</span></label>
+                <input type="file" id="comprobante_pago" name="comprobante_pago" accept="image/png, image/jpeg" required>
+                <div id="previewPagoContainer" class="hidden contenedor-preview">
+                    <img id="pagoPreview" src="" alt="Vista previa pago" class="img-preview">
+                </div>
+            </div>
+
+            <button type="submit" id="btnSubmit" style="margin-top: 20px; width: 100%;">Registrar Pago</button>
+            
+            <div style="text-align: center; margin-top: 15px;">
+                <a href="{% url 'salir' %}" style="color: #dc3545; text-decoration: none; font-weight: bold;">Cerrar Sesión</a>
+            </div>
+
+        </form>
+
+    </div>
+    <script src="{% static 'js/script.js' %}"></script>
+</body>
+</html>

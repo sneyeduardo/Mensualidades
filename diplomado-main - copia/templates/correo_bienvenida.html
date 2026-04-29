@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        body { font-family: Arial, sans-serif; background-color: #f4f4f4; padding: 20px; }
+        .container { background-color: #ffffff; padding: 30px; border-radius: 8px; max-width: 600px; margin: 0 auto; border-top: 5px solid #0056b3; box-shadow: 0 4px 8px rgba(0,0,0,0.1); }
+        .header { text-align: center; border-bottom: 2px solid #eeeeee; padding-bottom: 20px; margin-bottom: 20px; }
+        .header h2 { color: #333333; margin: 0; }
+        .content { color: #555555; line-height: 1.6; }
+        .factura-box { background-color: #f9f9f9; padding: 15px; border-radius: 5px; margin: 20px 0; border: 1px solid #e0e0e0; }
+        .footer { text-align: center; color: #888888; font-size: 12px; margin-top: 30px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div style="text-align: center; margin-bottom: 20px;">
+                <img src="{{ dominio }}/static/img/universidad-de-carabobo-logo-png_seeklogo-535325.png" alt="UC" style="height: 60px; margin: 0 10px; display: inline-block; vertical-align: middle;">
+                <img src="{{ dominio }}/static/img/Zynaoxe.jpg" alt="Zynapxe" style="height: 50px; margin: 0 10px; display: inline-block; vertical-align: middle;">
+                <img src="{{ dominio }}/static/img/cenforpro.png" alt="Cenforpro" style="height: 60px; margin: 0 10px; display: inline-block; vertical-align: middle;">
+            </div>
+
+            <h2 style="color: #333333; margin: 0;">¡Inscripción Recibida, {{ alumno.nombres }}! 🎉</h2>
+            <p style="color: #666;">Diplomado en IA Generativa - Universidad de Carabobo</p>
+        </div>
+        
+        <div class="content">
+            <p>Hola <strong>{{ alumno.nombres }} {{ alumno.apellidos }}</strong>,</p>
+            <p>Queremos agradecerte por confiar en nosotros. Hemos recibido exitosamente tu formulario de inscripción y el soporte de pago. Nuestro equipo administrativo lo revisará en la brevedad posible.</p>
+            
+            <div class="factura-box">
+                <h3 style="margin-top: 0; color: #0056b3;">Resumen de tu Inscripción</h3>
+                <strong>Cédula:</strong> {{ alumno.cedula }}<br>
+                <strong>Monto Registrado:</strong> ${{ alumno.monto }}<br>
+                <strong>Banco Emisor:</strong> {{ alumno.banco }}<br>
+                <strong>N° de Referencia:</strong> {{ alumno.referencia }}<br>
+            </div>
+            <div style="background-color: #eef2f5; padding: 20px; border-left: 4px solid #0056b3; margin: 20px 0; border-radius: 4px;">
+                <h3 style="margin-top: 0; color: #0056b3;">Credenciales de Acceso al Sistema</h3>
+                <p style="margin-bottom: 5px;"><strong>Usuario:</strong> {{ alumno.cedula }}</p>
+                <p style="margin-top: 0;"><strong>Contraseña:</strong> <span style="background-color: #ffffff; padding: 3px 8px; border: 1px solid #ccc; font-family: monospace; font-size: 16px; letter-spacing: 1px;">{{ clave }}</span></p>
+                <p style="font-size: 12px; color: #777; margin-top: 10px;"><em>No compartas tu contraseña con.</em></p>
+            </div>
+
+            <p>Si tienes alguna duda o necesitas soporte adicional, no dudes en responder a este correo.</p>
+            <p>¡Nos vemos pronto en clases!</p>
+        </div>
+
+        <div class="footer">
+            <p>Este es un correo generado automáticamente por el sistema de admisiones de Zynapxe y Cenforpro. Por favor, conserva este mensaje como comprobante.</p>
+        </div>
+    </div>
+</body>
+</html>

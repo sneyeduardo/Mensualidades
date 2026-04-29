@@ -1,0 +1,343 @@
+:root {
+    --primary: #FFFFFF;
+    --secondary: #00a8cc;
+    --accent: #f0f4f8;
+    --text: #333;
+    --partner: #FFA500;
+    --entradas: #FFFFFF	
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f4f7f6;
+    color: var(--text);
+    margin: 0;
+    padding: 20px;
+}
+
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    background: #fff;
+    padding: 40px;
+    border-radius: 12px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+}
+
+header {
+    text-align: center;
+    margin-bottom: 30px;
+    border-bottom: 2px solid var(--accent);
+    padding-bottom: 20px;
+}
+
+.logos {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+}
+
+.logos img {
+    height: 60px;
+    object-fit: contain;
+    margin: 10px;
+}
+
+h1 { color: var(--primary); margin: 0; font-size: 1.8rem; }
+h2 { color: var(--partner); margin: 0; font-size: 1.2rem; }
+h3 { color: var(--primary); margin: 0; font-size: 1.0rem; }
+entrada { color: var(--entradas); margin: 0; font-size: 1.0rem; }
+
+/* Estilos de Foto y Preview */
+#fotoAlumno {
+    border: 1px dashed #ccc;
+    padding: 10px;
+    margin-top: 5px;
+}
+
+.img-preview {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid var(--secondary);
+    margin: 15px auto;
+    display: block;
+}
+
+.hidden { display: none; }
+
+.img-table-thumb {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+/* Formulario */
+.form-group { margin-bottom: 20px; }
+label { display: block; margin-bottom: 8px; font-weight: 600; font-size: 0.9rem; }
+
+input, select {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    box-sizing: border-box;
+    font-size: 1rem;
+}
+
+.input-group { display: flex; gap: 10px; }
+.input-group select { width: 80px; }
+
+.row { display: flex; gap: 20px; }
+.row .form-group { flex: 1; }
+
+button {
+    width: 100%;
+    padding: 15px;
+    background-color: var(--primary);
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 1.1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+button:hover { background-color: var(--secondary); }
+
+/* Admin Section */
+.admin-section {
+    margin-top: 50px;
+    padding-top: 20px;
+    border-top: 3px double var(--accent);
+}
+
+.admin-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.table-container {
+    overflow-x: auto;
+    background: #fff;
+    border-radius: 8px;
+    border: 1px solid #eee;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.85rem;
+}
+
+th {
+    background-color: var(--accent);
+    color: var(--primary);
+    text-align: left;
+    padding: 12px;
+}
+
+td {
+    padding: 10px;
+    border-bottom: 1px solid #f0f0f0;
+    vertical-align: middle;
+}
+
+.btn-secondary {
+    background-color: #28a745;
+    padding: 8px 15px;
+    font-size: 0.8rem;
+    width: auto;
+}
+
+#message { margin-top: 20px; text-align: center; font-weight: bold; }
+.error { color: #d9534f; }
+.success { color: #5cb85c; }
+
+@media (max-width: 600px) {
+    .row { flex-direction: column; gap: 0; }
+}
+
+/* Estilo del fondo tecnológico basado en la imagen */
+.bg-tech {
+    background: linear-gradient(rgba(0, 43, 91, 0.8), rgba(0, 43, 91, 0.8)), 
+                url('../img/ws.jpeg');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    height: 100vh;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Superposición para el formulario en index.html */
+body:not(.bg-tech) {
+    background: linear-gradient(rgba(0, 43, 91, 0.7), rgba(0, 43, 91, 0.7)), 
+                url('../img/ws.jpeg');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+}
+
+/* Tarjeta de Bienvenida */
+.welcome-overlay {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.welcome-card {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    padding: 50px;
+    border-radius: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    text-align: center;
+    color: white;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.5);
+    max-width: 600px;
+}
+
+.logos-welcome {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin-bottom: 30px;
+}
+
+.logos-welcome img {
+    height: 80px;
+    filter: drop-shadow(0 0 10px rgba(255,255,255,0.3));
+}
+
+.btn-enter {
+    display: inline-block;
+    margin-top: 30px;
+    padding: 15px 40px;
+    background-color: var(--secondary);
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+    border-radius: 30px;
+    font-size: 1.2rem;
+    transition: all 0.3s ease;
+    border: 2px solid transparent;
+}
+
+.btn-enter:hover {
+    background-color: transparent;
+    border-color: var(--secondary);
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(0, 168, 204, 0.4);
+}
+
+/* Ajuste de transparencia para el contenedor del formulario */
+.container {
+    background: rgba(255, 255, 255, 0.95); /* Un poco de transparencia para que se vea el fondo */
+
+/* --- Animaciones para la Página de Bienvenida --- */
+
+/* Keyframes para el desvanecimiento de abajo hacia arriba */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Keyframes para el resplandor del botón */
+@keyframes glow {
+    0% { box-shadow: 0 0 5px rgba(0, 168, 204, 0.4); }
+    50% { box-shadow: 0 0 20px rgba(0, 168, 204, 0.8); }
+    100% { box-shadow: 0 0 5px rgba(0, 168, 204, 0.4); }
+}
+
+/* Aplicar la animación fade-in a la tarjeta de bienvenida */
+.welcome-card {
+    opacity: 0; /* Inicia invisible */
+    animation: fadeInUp 1.2s ease-out forwards; /* forwards mantiene el estado final */
+    animation-delay: 0.3s; /* Pequeño retraso para que cargue el fondo */
+}
+
+/* Aplicar la animación de resplandor al botón */
+.btn-enter {
+    animation: glow 2s infinite ease-in-out; /* Intermitente e infinito */
+    transition: all 0.3s ease; /* Para el efecto hover */
+}
+
+/* Ajuste en el hover del botón para detener el resplandor y cambiar estilo */
+.btn-enter:hover {
+    animation: none; /* Detiene el parpadeo al pasar el mouse */
+    background-color: transparent;
+    border-color: var(--secondary);
+    transform: translateY(-3px) scale(1.05); /* Ligeramente más grande */
+    box-shadow: 0 10px 20px rgba(0, 168, 204, 0.6);
+}
+}
+/* =========================================================
+   DISEÑO RESPONSIVO (TELÉFONOS Y TABLETS PEQUEÑAS)
+========================================================= */
+
+@media screen and (max-width: 768px) {
+    
+    /* 1. Arreglamos el fondo rebelde */
+    .bg-tech {
+        /* Obligamos al fondo a moverse con el scroll. 
+           Esto evita el bug de la pantalla en blanco en iOS y Android */
+        background-attachment: scroll !important; 
+        background-position: center top; 
+    }
+
+    /* 2. Ajustamos la tarjeta blanca de bienvenida */
+    .welcome-card {
+        width: 90% !important; /* Que ocupe el 90% de la pantallita, dejando un margen */
+        margin: 20px auto;     /* Centrado perfecto */
+        padding: 25px 15px;    /* Un poco menos de relleno interno */
+        box-sizing: border-box;
+    }
+
+    /* 3. Evitamos que los logos se amontonen */
+    .logos-welcome {
+        display: flex;
+        flex-wrap: wrap; /* Si no caben, bajan a la siguiente línea */
+        justify-content: center;
+        gap: 10px;
+    }
+
+    .logos-welcome img {
+        max-width: 70px; /* Logos un poco más discretos en celular */
+        height: auto;
+    }
+
+    /* 4. Achicamos un poco los textos para que no se desborden */
+    .welcome-card h1 {
+        font-size: 1.6rem;
+        margin-bottom: 10px;
+    }
+
+    .welcome-card h2 {
+        font-size: 1.1rem;
+        line-height: 1.4;
+    }
+
+    /* 5. El botón más fácil de tocar con el dedo */
+    .btn-enter {
+        width: 100%; /* Que el botón sea ancho y fácil de presionar */
+        padding: 15px;
+        box-sizing: border-box;
+        font-size: 1.1rem;
+    }
+}

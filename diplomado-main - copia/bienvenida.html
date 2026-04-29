@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inscripción - Diplomado en IA Generativa</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="logos">
+                <img src="universidad-de-carabobo-logo-png_seeklogo-535325.png" alt="UC Logo" class="logo-uc">
+                <img src="Zynaoxe.png" alt="Zynapxe Logo" class="logo-zyna">
+                <img src="cenforpro.png" alt="Cenforpro Logo" class="logo-cen">
+            </div>
+            <h1>Inscripción Diplomado IA Generativa</h1>
+            <h2>Universidad de Carabobo - Cenforpro - Zynapxe AI Engineer</h2><br>	
+            <h3>Estrategias, Implementación y Marco Legal</h3>
+        </header>
+
+        <form id="registrationForm">
+
+		<div class="form-group">
+    			<label for="fotoAlumno">Foto del Alumno <span style="color: red;">* (Obligatorio)</span></label>
+    			<input type="file" id="fotoAlumno" accept="image/png, image/jpeg" required title="Debe cargar una foto para continuar">
+   			 <div id="previewContainer" class="hidden">
+    		    <img id="fotoPreview" src="" alt="Vista previa" class="img-preview">
+  		  </div>
+	</div>
+
+            <div class="form-group">
+                <label>Cédula de Identidad (PK)</label>
+                <div class="input-group">
+                    <select id="ci_prefix" required>
+                        <option value="V-">V-</option>
+                        <option value="E-">E-</option>
+                    </select>
+                    <input type="number" id="cedula" placeholder="12345678" required>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="form-group">
+                    <label for="nombres">Nombres</label>
+                    <input type="text" id="nombres" maxlength="30" required>
+                </div>
+                <div class="form-group">
+                    <label for="apellidos">Apellidos</label>
+                    <input type="text" id="apellidos" maxlength="30" required>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="form-group">
+                    <label for="fecha_nacimiento">Fecha de Nacimiento</label>
+                    <input type="date" id="fecha_nacimiento" required>
+                </div>
+                <div class="form-group">
+                    <label for="edad">Edad</label>
+                    <input type="number" id="edad" readonly placeholder="Auto-calculada">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="profesion">Profesión u Oficio</label>
+                <input type="text" id="profesion" maxlength="25" required>
+            </div>
+
+            <div class="form-group">
+                <label for="direccion">Dirección de Habitación</label>
+                <input type="text" id="direccion" maxlength="100" required>
+            </div>
+
+            <div class="row">
+                <div class="form-group">
+                    <label for="correo">Correo Electrónico</label>
+                    <input type="email" id="correo" placeholder="ejemplo@correo.com" required>
+                </div>
+                <div class="form-group">
+                    <label for="telefono">Teléfono</label>
+                    <input type="tel" id="telefono" maxlength="11" placeholder="04141234567" required>
+                </div>
+            </div><br>
+
+            <hr>
+            <h3>Detalles del Pago</h3><br>
+
+            <div class="row">
+                <div class="form-group">
+                    <label for="monto">Monto de Pago ($)</label>
+                    <input type="number" id="monto" step="0.01" min="0.01" required>
+                </div>
+                <div class="form-group">
+                    <label for="referencia">Referencia</label>
+                    <input type="number" id="referencia" maxlength="12" required>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="banco">Banco Emisor</label>
+                <select id="banco" required>
+                    <option value="" disabled selected>Seleccione un banco...</option>
+                    <option value="Banco de Venezuela">Banco de Venezuela</option>
+                    <option value="Banco Nacional de Crédito">Banco Nacional de Crédito</option>
+                    <option value="BBVA Provincial">BBVA Provincial</option>
+                    <option value="Banesco">Banesco</option>
+                    <option value="Mercantil Banco">Mercantil Banco</option>
+                    <option value="Bancamiga">Bancamiga</option>
+                    <option value="Banplus">Banplus</option>
+                    <option value="Bancaribe">Bancaribe</option>
+                    <option value="100% Banco">100% Banco</option>
+                </select>
+            </div>
+
+            <button type="submit" id="btnSubmit">Registrar Inscripción</button>
+        </form>
+
+        <div id="message"></div>
+
+        <section class="admin-section">
+            <div class="admin-header">
+                <h3>Alumnos Inscritos</h3>
+                <button id="downloadCsv" class="btn-secondary">Exportar a Excel (CSV)</button>
+            </div>
+            <div class="table-container">
+                <table id="recordsTable">
+                    <thead>
+                        <tr>
+                            <th>Foto</th>
+                            <th>Cédula</th>
+                            <th>Nombre Completo</th>
+                            <th>Correo</th>
+                            <th>Referencia</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </section>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
