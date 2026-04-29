@@ -6,7 +6,63 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Portal de Pagos - Diplomado IA Generativa</title>
     <link rel="stylesheet" href="{% static 'css/styles1.css' %}">
-    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        /* Estilo temporal para ocultar el contenido hasta que cargue la imagen */
+        .welcome-overlay { opacity: 0; transition: opacity 0.5s ease; }
+        .loaded .welcome-overlay { opacity: 1; }
+
+        /* NUEVOS ESTILOS: Para el formulario de login */
+        .login-form {
+            margin-top: 25px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            align-items: center;
+        }
+        
+        .login-input {
+            width: 85%; /* Ajustado para que encaje bien en la tarjeta */
+            padding: 12px 15px;
+            border: 1px solid rgba(0, 0, 0, 0.2);
+            border-radius: 8px;
+            font-size: 16px;
+            background-color: rgba(255, 255, 255, 0.95);
+            color: #333;
+            transition: all 0.3s ease;
+        }
+        
+        /* Efecto cuando el usuario hace clic en el input (Borde naranja) */
+        .login-input:focus {
+            outline: none;
+            border-color: #f37021; 
+            box-shadow: 0 0 8px rgba(243, 112, 33, 0.4);
+            background-color: #ffffff;
+        }
+        
+        /* Estilo para los mensajes de error de contraseña */
+        .alert-error {
+            color: #d9534f;
+            background-color: rgba(217, 83, 79, 0.1);
+            border: 1px solid rgba(217, 83, 79, 0.3);
+            padding: 10px;
+            border-radius: 6px;
+            margin-top: 15px;
+            font-weight: 600;
+            font-size: 14px;
+            text-align: center;
+            width: 85%;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .password-container .login-input {
+    padding-right: 45px; /* Evita que el texto de la contraseña se encime con el ojo */
+}
+
+#togglePassword:hover {
+    color: #f37021; /* Color naranja al pasar el mouse, combinando con tu estilo de foco */
+}
+    </style>
 </head>
 <body class="bg-tech">
     <div class="welcome-overlay">
@@ -32,15 +88,10 @@
                 
                 <input type="text" name="cedula" class="login-input" placeholder="Cédula de Identidad" required autocomplete="off">
                 
-                <div class="password-container">
-                    <input type="password" name="contrasena" id="contrasena" class="login-input" placeholder="Contraseña" required>
-                    <button type="button" id="togglePassword" class="toggle-password-btn" aria-label="Mostrar contraseña">
-                        <svg id="eyeIcon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
-                            <circle cx="12" cy="12" r="3"></circle>
-                        </svg>
-                    </button>
-                </div>
+                <div class="password-container" style="width: 85%; position: relative;">
+    <input type="password" name="contrasena" id="contrasena" class="login-input" placeholder="Contraseña" required style="width: 100%;">
+    <i class="fas fa-eye" id="togglePassword" style="position: absolute; right: 15px; top: 50%; transform: translateY(-50%); cursor: pointer; color: #666;"></i>
+</div>
                 
                 <button type="submit" class="btn-enter" style="width: 85%; border: none; cursor: pointer; margin-top: 10px;">
                     Ingresar
@@ -51,31 +102,7 @@
     </div>
     
     <script>
-        // Funcionalidad del ojito de la contraseña
-        const togglePasswordBtn = document.getElementById('togglePassword');
-        const passwordInput = document.getElementById('contrasena');
-        const eyeIcon = document.getElementById('eyeIcon');
-
-        togglePasswordBtn.addEventListener('click', function () {
-            // Verifica el tipo actual y lo alterna
-            const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
-            passwordInput.setAttribute('type', type);
-            
-            // Alterna el ícono SVG (Ojo tachado vs Ojo abierto)
-            if (type === 'text') {
-                eyeIcon.innerHTML = `
-                    <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path>
-                    <line x1="1" y1="1" x2="23" y2="23"></line>
-                `;
-            } else {
-                eyeIcon.innerHTML = `
-                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
-                    <circle cx="12" cy="12" r="3"></circle>
-                `;
-            }
-        });
-
-        // Script para precargar la imagen de fondo
+        // Tu script intacto para precargar la imagen
         window.addEventListener('load', function() {
             const bgImageUrl = '{% static "img/fondo_ia.jpeg" %}'; 
             const img = new Image();
@@ -90,6 +117,19 @@
                 document.body.classList.add('loaded');
             };
         });
+        
+    const togglePassword = document.querySelector('#togglePassword');
+    const password = document.querySelector('#contrasena');
+
+    togglePassword.addEventListener('click', function (e) {
+        // Cambiar el tipo de input
+        const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
+        password.setAttribute('type', type);
+        
+        // Cambiar el icono (ojo abierto / ojo tachado)
+        this.classList.toggle('fa-eye-slash');
+    });
+
     </script>
 </body>
 </html>
