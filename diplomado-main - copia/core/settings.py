@@ -1,7 +1,7 @@
 """
 Django settings for core project.
 """
-
+import pymysql
 import os
 from pathlib import Path
 
